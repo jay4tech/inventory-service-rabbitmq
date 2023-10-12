@@ -18,12 +18,12 @@ public class InventoryService implements IInventoryService{
     }
 
     @Override
-    public Inventory createtInventory(Inventory inventory) {
+    public Inventory createtUpdateInventory(Inventory inventory) {
         return inventoryRepository.save(inventory);
     }
 
     @Override
-    public Inventory getInventoryByProductId(Order orderDetails) {
-        return inventoryRepository.getInventoryByProductId(orderDetails.getProductId());
+    public Inventory getInventoryByProductId(Long productId) {
+        return inventoryRepository.getInventoryByProductId(productId);
     }
 }

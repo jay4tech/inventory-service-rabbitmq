@@ -14,14 +14,22 @@ public class MessageConsumer {
     @Autowired
     IInventoryService inventoryService;
 
-    @RabbitListener(queues = {"${queue.name}"})
+    @Autowired
+    MessageSender messageSender;
+
+    @RabbitListener(queues = {"${queue.name.inventory}"})
     public void receive(@Payload String message) {
-        System.out.println("Message " + message);
-        Order orderDetails = UtilityMapper.responseToModel(message);
-        Inventory inventory = inventoryService.getInventoryByProductId(orderDetails);
-        assert orderDetails != null;
-        inventory.setQuantity(inventory.getQuantity() - orderDetails.getQuantity());
-        inventoryService.createtInventory(inventory);
+        try {
+            System.out.println("Message " + message);
+            Order orderDetails = UtilityMapper.responseToModel(message);
+            Inventory inventory = inventoryService.getInventoryByProductId(orderDetails.getProductId());
+            assert orderDetails != null;
+            inventory.setQuantity(inventory.getQuantity() - orderDetails.getQuantity());
+            inventoryService.createtUpdateInventory(inventory);
+            messageSender.sendPaymentEvent(UtilityMapper.getJsonString(orderDetails));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

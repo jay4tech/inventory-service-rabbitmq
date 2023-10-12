@@ -22,6 +22,14 @@ public class UtilityMapper {
         }
     }
 
+    public static String getJsonString(Order order) {
+        try {
+            return getMapper().writeValueAsString(order);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static ObjectMapper getMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);

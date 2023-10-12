@@ -8,13 +8,20 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConfig {
 
+    @Value("${queue.name.inventory}")
+    private String queueInventory;
 
-    @Value("${queue.name}")
-    private String queueName;
+    @Bean(name = "queueInventory")
+    public Queue queue() {
+        return new Queue(queueInventory, true);
+    }
+
+    @Value("${queue.name.payment}")
+    private String queuePayment;
 
     @Bean
-    public Queue queue() {
-        return new Queue(queueName, true);
+    public Queue queuePayment() {
+        return new Queue(queuePayment, true);
     }
 
 }

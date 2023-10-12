@@ -17,9 +17,12 @@ public class InventoryController {
         return inventoryService.getInventory(id);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public Inventory createtInventory(@RequestBody Inventory inventory){
-        return inventoryService.createtInventory(inventory);
+        return inventoryService.createtUpdateInventory(inventory);
     }
-
+    @GetMapping("/product/{productId}")
+    public Inventory getInventoryProductId(@PathVariable Long productId) {
+        return inventoryService.getInventoryByProductId(productId);
+    }
 }
